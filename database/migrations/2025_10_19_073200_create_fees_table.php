@@ -13,13 +13,10 @@ return new class extends Migration
     {
         Schema::create('fees', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('schoolId');
-            $table->unsignedBigInteger('gradeId');
+            $table->integer('schoolId');
+            $table->integer('gradeId');
             $table->decimal('price', 8, 2);
             $table->timestamps();
-
-            $table->foreign('schoolId')->references('id')->on('schools')->onDelete('cascade');
-            $table->foreign('gradeId')->references('id')->on('levels')->onDelete('cascade');
         });
     }
 
