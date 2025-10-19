@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\managercontroller;
 use App\Http\Controllers\Admin\schoolcontroller;
 use App\Http\Controllers\Manager\levelcontroller;
 use App\Http\Controllers\Manager\teachercontroller;
+use App\Http\Controllers\Manager\FeeController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -19,6 +20,7 @@ Route::apiResource('teachers', teachercontroller::class);
 
 Route::apiResource('grades', levelcontroller::class);
 
+Route::apiResource('fees', FeeController::class);
 
 
 
