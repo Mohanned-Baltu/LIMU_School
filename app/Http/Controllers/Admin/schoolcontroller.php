@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\School;
-use Illuminate\Http\Request;
+use App\Http\Requests\schoolReq;
 
 class schoolcontroller extends Controller
 {
@@ -20,15 +20,9 @@ class schoolcontroller extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(schoolReq $request)
     {
-        $input = $request->validate([
-            'name' => ['required'],
-            'location' => ['required'],
-            'level' =>['required'],
-            'type' =>['required']
-        ]);
-        School::create($input);
+        School::create($request->validated());
         return response()->json([
             'message' => 'School created successfully']);
     }
@@ -45,16 +39,10 @@ class schoolcontroller extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(schoolReq $request, string $id)
     {
-        $update = $request->validate([
-            'name' => ['required'],
-            'location' => ['required'],
-            'level' =>['required'],
-            'type' =>['required']
-        ]);
         $school=School::findOrFail($id);
-        $school->update($update);
+        $school->update($request->validated());
         return response()->json([
             'message' => 'School is updated successfully']);
     }

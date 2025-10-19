@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Manager;
-use Illuminate\Http\Request;
+use App\Http\Requests\managerReq;
 
 class managercontroller extends Controller
 {
@@ -20,16 +20,9 @@ class managercontroller extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(managerReq $request)
     {
-        $input = $request->validate([
-            'name' => ['required'],
-            'email' => ['required','unique:managers,email'],
-            'phoneNumber' =>['required'],
-            'password'=>['required','password'],
-            'schoolId'=>['required','exists:schools,id']
-        ]);
-        Manager::create($input);
+        Manager::create($request->validated());
         return response()->json([
             'message' => 'Manager created successfully']);
     }
@@ -46,17 +39,10 @@ class managercontroller extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(managerReq $request, string $id)
     {
-        $update = $request->validate([
-            'name' => ['required'],
-            'email' => ['required','unique:managers,email'],
-            'phoneNumber' =>['required'],
-            'password'=>['required','string'],
-            'schoolId'=>['required','exists:schools,id']
-        ]);
         $manager=Manager::findOrFail($id);
-        $manager->update($update);
+        $manager->update($request->validated());
         return response()->json([
             'message' => 'Manager is updated successfully']);
     }

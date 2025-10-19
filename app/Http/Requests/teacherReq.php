@@ -11,7 +11,7 @@ class teacherReq extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,21 @@ class teacherReq extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
+        $rules = [
+            'name' => 'required|string',
+            'phoneNumber' => 'required|string|unique:teachers,phoneNumber',
+            'subject' => 'required|string',
+            'level' => 'required|string',
         ];
+
+        if ($this->isMethod('patch') || $this->isMethod('put')) {
+            $teacherId = $this->route('teacher');
+            $rules['name'] = 'sometimes|string';
+            $rules['phoneNumber'] = 'sometimes|string|unique:teachers,phoneNumber,' . $teacherId;
+            $rules['subject'] = 'sometimes|string';
+            $rules['level'] = 'sometimes|string';
+        }
+
+        return $rules;
     }
 }

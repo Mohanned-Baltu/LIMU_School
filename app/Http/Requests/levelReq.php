@@ -11,7 +11,7 @@ class levelReq extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,15 @@ class levelReq extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
+        $rules = [
+            'level' => 'required|string|unique:levels,level',
         ];
+
+        if ($this->isMethod('patch') || $this->isMethod('put')) {
+            $levelId = $this->route('level');
+            $rules['level'] = 'sometimes|string|unique:levels,level,' . $levelId;
+        }
+
+        return $rules;
     }
 }

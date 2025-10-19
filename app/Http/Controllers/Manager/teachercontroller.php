@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
 use App\Models\Teacher;
-use Illuminate\Http\Request;
+use App\Http\Requests\teacherReq;
 
 class teachercontroller extends Controller
 {
@@ -20,15 +20,9 @@ class teachercontroller extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(teacherReq $request)
     {
-        $input = $request->validate([
-            'name' => ['required'],
-            'phoneNumber' =>['required','unique:teachers,phoneNumber'],
-            'subject'=>['required'],
-            'level'=>['required']
-        ]);
-        Teacher::create($input);
+        Teacher::create($request->validated());
         return response()->json([
             'message' => 'Teacher created successfully']);
     }
@@ -45,17 +39,10 @@ class teachercontroller extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(teacherReq $request, string $id)
     {
-        $update = $request->validate([
-            'name' => ['required'],
-            'email' => ['required','unique:managers,email'],
-            'phoneNumber' =>['required'],
-            'password'=>['required','string'],
-            'subject'=>['required']
-        ]);
         $teacher=Teacher::findOrFail($id);
-        $teacher->update($update);
+        $teacher->update($request->validated());
         return response()->json([
             'message' => 'Teacher is updated successfully']);
     }

@@ -11,7 +11,7 @@ class feesReq extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,18 @@ class feesReq extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
+        $rules = [
+            'schoolId' => 'required|integer',
+            'level' => 'required|integer',
+            'price' => 'required|numeric',
         ];
+
+        if ($this->isMethod('patch') || $this->isMethod('put')) {
+            $rules = array_map(function ($rule) {
+                return 'sometimes|' . $rule;
+            }, $rules);
+        }
+
+        return $rules;
     }
 }

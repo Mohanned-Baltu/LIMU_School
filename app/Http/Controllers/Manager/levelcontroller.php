@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
 use App\Models\Level;
-use Illuminate\Http\Request;
+use App\Http\Requests\levelReq;
 
 class levelcontroller extends Controller
 {
@@ -20,12 +20,9 @@ class levelcontroller extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(levelReq $request)
     {
-         $input = $request->validate([
-            'level' => ['required']
-        ]);
-        Level::create($input);
+        Level::create($request->validated());
         return response()->json([
             'message' => 'Grade added successfully']);
     }
@@ -42,13 +39,10 @@ class levelcontroller extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(levelReq $request, string $id)
     {
-         $update = $request->validate([
-            'level' => ['required']
-        ]);
         $grade=Level::findOrFail($id);
-        $grade->update($update);
+        $grade->update($request->validated());
         return response()->json([
             'message' => 'Grade is updated successfully']);
     }

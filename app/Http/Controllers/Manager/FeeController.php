@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
 use App\Models\Fee;
-use Illuminate\Http\Request;
+use App\Http\Requests\feesReq;
 
 class FeeController extends Controller
 {
@@ -20,15 +20,9 @@ class FeeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(feesReq $request)
     {
-        $input = $request->validate([
-            'schoolId' => ['required', 'exists:schools,id'],
-            'level' => ['required', 'exists:levels,id'],
-            'price' => ['required', 'numeric'],
-        ]);
-
-        Fee::create($input);
+        Fee::create($request->validated());
 
         return response()->json([
             'message' => 'Fee added successfully'
@@ -47,16 +41,10 @@ class FeeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(feesReq $request, string $id)
     {
-        $validatedData = $request->validate([
-            'schoolId' => ['required', 'exists:schools,id'],
-            'level' => ['required', 'exists:levels,id'],
-            'price' => ['required', 'numeric'],
-        ]);
-
         $fee = Fee::findOrFail($id);
-        $fee->update($validatedData);
+        $fee->update($request->validated());
 
         return response()->json([
             'message' => 'Fee is updated successfully'

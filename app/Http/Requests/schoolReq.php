@@ -11,7 +11,7 @@ class schoolReq extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,21 @@ class schoolReq extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
+        $rules = [
+            'name' => 'required|string|unique:schools,name',
+            'location' => 'required|string',
+            'level' => 'required|in:primary,secondary,both',
+            'type' => 'required|in:male,female,mixed',
         ];
+
+        if ($this->isMethod('patch') || $this->isMethod('put')) {
+            $schoolId = $this->route('school');
+            $rules['name'] = 'sometimes|string|unique:schools,name,' . $schoolId;
+            $rules['location'] = 'sometimes|string';
+            $rules['level'] = 'sometimes|in:primary,secondary,both';
+            $rules['type'] = 'sometimes|in:male,female,mixed';
+        }
+
+        return $rules;
     }
 }
