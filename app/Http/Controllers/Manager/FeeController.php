@@ -24,7 +24,7 @@ class FeeController extends Controller
     {
         $input = $request->validate([
             'schoolId' => ['required', 'exists:schools,id'],
-            'gradeId' => ['required', 'exists:levels,id'],
+            'level' => ['required', 'exists:levels,id'],
             'price' => ['required', 'numeric'],
         ]);
 
@@ -51,7 +51,7 @@ class FeeController extends Controller
     {
         $validatedData = $request->validate([
             'schoolId' => ['required', 'exists:schools,id'],
-            'gradeId' => ['required', 'exists:levels,id'],
+            'level' => ['required', 'exists:levels,id'],
             'price' => ['required', 'numeric'],
         ]);
 

@@ -8,7 +8,7 @@ class Fee extends Model
 {
     protected $fillable = [
         'schoolId',
-        'gradeId',
+        'level',
         'price',
     ];
 }

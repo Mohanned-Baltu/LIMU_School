@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('fees', function (Blueprint $table) {
             $table->id();
             $table->integer('schoolId');
-            $table->integer('gradeId');
-            $table->decimal('price', 8, 2);
+            $table->integer('level');
+            $table->double('price');
             $table->timestamps();
         });
     }
